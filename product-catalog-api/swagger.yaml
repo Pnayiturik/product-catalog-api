@@ -1,0 +1,164 @@
+swagger: "2.0"
+info:
+  version: "1.0.0"
+  title: "Product Catalog API"
+  description: "RESTful API for a Product Catalog System (Assignment by Patrick Nayituriki)"
+  contact:
+    name: "Patrick Nayituriki"
+host: "localhost:3002"
+basePath: "/api"
+schemes:
+  - "http"
+consumes:
+  - "application/json"
+produces:
+  - "application/json"
+
+paths:
+  /products:
+    get:
+      summary: "Get all products"
+      description: "Retrieve a list of all products"
+      responses:
+        200:
+          description: "Successful response"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Product"
+    post:
+      summary: "Create a new product"
+      description: "Add a new product to the catalog"
+      parameters:
+        - in: "body"
+          name: "product"
+          description: "Product object"
+          required: true
+          schema:
+            $ref: "#/definitions/Product"
+      responses:
+        201:
+          description: "Product created successfully"
+        400:
+          description: "Invalid input"
+
+  /products/{id}:
+    get:
+      summary: "Get product by ID"
+      description: "Retrieve a specific product by its ID"
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "Product ID"
+          required: true
+          type: "string"
+      responses:
+        200:
+          description: "Successful response"
+          schema:
+            $ref: "#/definitions/Product"
+        404:
+          description: "Product not found"
+    put:
+      summary: "Update product"
+      description: "Update an existing product"
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "Product ID"
+          required: true
+          type: "string"
+        - in: "body"
+          name: "product"
+          description: "Updated product object"
+          required: true
+          schema:
+            $ref: "#/definitions/Product"
+      responses:
+        200:
+          description: "Product updated successfully"
+        404:
+          description: "Product not found"
+    delete:
+      summary: "Delete product"
+      description: "Remove a product from the catalog"
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "Product ID"
+          required: true
+          type: "string"
+      responses:
+        200:
+          description: "Product deleted successfully"
+        404:
+          description: "Product not found"
+
+  /categories:
+    get:
+      summary: "Get all categories"
+      description: "Retrieve a list of all categories"
+      responses:
+        200:
+          description: "Successful response"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Category"
+    post:
+      summary: "Create a new category"
+      description: "Add a new category"
+      parameters:
+        - in: "body"
+          name: "category"
+          description: "Category object"
+          required: true
+          schema:
+            $ref: "#/definitions/Category"
+      responses:
+        201:
+          description: "Category created successfully"
+        400:
+          description: "Invalid input"
+
+definitions:
+  Product:
+    type: "object"
+    required:
+      - "name"
+      - "price"
+    properties:
+      id:
+        type: "string"
+        description: "Unique identifier for the product"
+      name:
+        type: "string"
+        description: "Product name"
+      description:
+        type: "string"
+        description: "Product description"
+      price:
+        type: "number"
+        format: "float"
+        description: "Product price"
+      category:
+        type: "string"
+        description: "Product category"
+      inStock:
+        type: "boolean"
+        description: "Whether the product is in stock"
+  
+  Category:
+    type: "object"
+    required:
+      - "name"
+    properties:
+      id:
+        type: "string"
+        description: "Unique identifier for the category"
+      name:
+        type: "string"
+        description: "Category name"
+      description:
+        type: "string"
+        description: "Category description"
